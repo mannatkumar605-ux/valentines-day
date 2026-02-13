@@ -10,42 +10,14 @@
 body{
 margin:0;
 padding:0;
-background: radial-gradient(circle at center,#2b0000,#000000);
+background: radial-gradient(circle at center,#3b0000,#000000);
 font-family:'Poppins',sans-serif;
 color:white;
 text-align:center;
 overflow:hidden;
 }
 
-/* INTRO SCREEN */
-#intro{
-position:fixed;
-width:100%;
-height:100%;
-background:black;
-display:flex;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-z-index:10;
-}
-
-#intro h2{
-font-size:35px;
-margin-bottom:20px;
-}
-
-#enterBtn{
-padding:15px 30px;
-border:none;
-border-radius:30px;
-background:#ff4da6;
-color:white;
-font-size:20px;
-cursor:pointer;
-}
-
-/* MAIN CONTENT */
+/* TITLE */
 h1{
 font-family:'Playfair Display',serif;
 font-size:55px;
@@ -59,69 +31,86 @@ margin-bottom:20px;
 color:#ffd6f6;
 }
 
-/* HEART IMAGE */
-.heart{
-width:300px;
-height:300px;
+/* CIRCLE PHOTO FRAME */
+.circle-frame{
+width:280px;
+height:280px;
 margin:20px auto;
+border-radius:50%;
+overflow:hidden;
+border:6px solid #ff4da6;
+box-shadow:0 0 40px #ff4da6;
 animation:beat 1.5s infinite;
-cursor:pointer;
 }
 
-.heart img{
+.circle-frame img{
 width:100%;
 height:100%;
 object-fit:cover;
-clip-path: polygon(
-50% 90%,
-90% 50%,
-75% 15%,
-50% 35%,
-25% 15%,
-10% 50%
-);
-box-shadow:0 0 40px #ff4da6;
 }
 
 @keyframes beat{
 0%,100%{transform:scale(1);}
-50%{transform:scale(1.1);}
+50%{transform:scale(1.08);}
 }
 
+/* RING */
 .ring{
-font-size:40px;
+font-size:50px;
 cursor:pointer;
 margin-top:15px;
+animation:shine 2s infinite alternate;
 }
 
+@keyframes shine{
+from{transform:scale(1);}
+to{transform:scale(1.1);}
+}
+
+/* LOVE LETTER POPUP */
+#letter{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.95);
+display:none;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+z-index:10;
+padding:30px;
+}
+
+#letter h2{
+font-family:'Playfair Display',serif;
+font-size:40px;
+color:#ff4da6;
+}
+
+#letter p{
+max-width:600px;
+font-size:20px;
+color:#ffd6f6;
+}
+
+#close{
+margin-top:20px;
+padding:10px 20px;
+border:none;
+border-radius:25px;
+background:#ff4da6;
+color:white;
+cursor:pointer;
+}
+
+/* FIREWORKS CANVAS */
 canvas{
 position:fixed;
 top:0;
 left:0;
-}
-
-.petal{
-position:absolute;
-font-size:20px;
-animation:fall 8s linear infinite;
-}
-
-@keyframes fall{
-0%{transform:translateY(-10vh);}
-100%{transform:translateY(110vh);}
-}
-
-.sparkle{
-position:absolute;
-pointer-events:none;
-animation:spark 1s linear;
-}
-
-@keyframes spark{
-to{
-transform:translateY(-20px);
-opacity:0;
-}
+z-index:-1;
 }
 
 </style>
@@ -129,97 +118,51 @@ opacity:0;
 
 <body>
 
-<div id="intro">
-<h2>💖 A Special Surprise For You 💖</h2>
-<button id="enterBtn">Enter Our Love Story</button>
-</div>
-
 <h1>Happy Valentine's Day Bettu ❤️</h1>
 <div class="subtitle">You are my forever & always ✨</div>
 
-<div class="heart" onclick="explode()">
+<div class="circle-frame">
 <img src="./her.jpeg">
 </div>
 
-<div class="ring" onclick="proposal()">💍 Click Me</div>
+<div class="ring" onclick="openRing()">💍</div>
 
 <audio id="music" loop>
 <source src="./your-song.mp3" type="audio/mpeg">
 </audio>
 
+<div id="letter">
+<h2>My Love Letter ❤️</h2>
+<p>
+From the moment you came into my life, everything became brighter.
+You are my peace, my happiness, my forever.
+I promise to stand beside you in every moment of life.
+I love you endlessly, Shambhavi.
+</p>
+<button id="close" onclick="closeLetter()">Close</button>
+</div>
+
 <canvas id="fireworks"></canvas>
 
 <script>
 
-/* ENTER BUTTON STARTS MUSIC */
-const intro=document.getElementById("intro");
-const enterBtn=document.getElementById("enterBtn");
-const music=document.getElementById("music");
+/* AUTO START SCREEN CLICK FOR MUSIC */
+window.addEventListener("click",function(){
+let music=document.getElementById("music");
+music.play().catch(()=>{});
+},{once:true});
 
-enterBtn.onclick=function(){
-intro.style.display="none";
-
-music.volume=0;
-music.play();
-
-let vol=0;
-let fade=setInterval(()=>{
-if(vol<1){
-vol+=0.05;
-music.volume=vol;
-}else clearInterval(fade);
-},200);
-};
-
-/* HEART EXPLOSION */
-function explode(){
-for(let i=0;i<30;i++){
-let h=document.createElement("div");
-h.innerHTML="❤️";
-h.style.position="absolute";
-h.style.left="50%";
-h.style.top="50%";
-document.body.appendChild(h);
-
-let x=(Math.random()-0.5)*500;
-let y=(Math.random()-0.5)*500;
-
-h.animate([
-{transform:"translate(0,0)",opacity:1},
-{transform:`translate(${x}px,${y}px)`,opacity:0}
-],{duration:1000});
-
-setTimeout(()=>h.remove(),1000);
-}
+/* RING OPEN EFFECT */
+function openRing(){
+alert("💎 The ring shines with love 💎");
+document.getElementById("letter").style.display="flex";
 }
 
-/* PROPOSAL */
-function proposal(){
-alert("Will you be mine forever, Shambhavi? 💍❤️");
+function closeLetter(){
+document.getElementById("letter").style.display="none";
 }
 
-/* ROSE PETALS */
-setInterval(()=>{
-let p=document.createElement("div");
-p.className="petal";
-p.innerHTML="🌹";
-p.style.left=Math.random()*100+"vw";
-document.body.appendChild(p);
-setTimeout(()=>p.remove(),8000);
-},600);
-
-/* SPARKLE TRAIL */
-document.addEventListener("mousemove",e=>{
-let s=document.createElement("div");
-s.className="sparkle";
-s.innerHTML="✨";
-s.style.left=e.pageX+"px";
-s.style.top=e.pageY+"px";
-document.body.appendChild(s);
-setTimeout(()=>s.remove(),1000);
-});
-
-/* FIREWORKS */
+/* FIREWORKS SPELL SHAMBHAVI */
 const canvas=document.getElementById("fireworks");
 const ctx=canvas.getContext("2d");
 canvas.width=window.innerWidth;
@@ -266,7 +209,15 @@ Math.random()*canvas.height/2);
 
 update();
 
+/* Spell Name */
+setTimeout(()=>{
+ctx.font="60px Playfair Display";
+ctx.fillStyle="#ff4da6";
+ctx.fillText("SHAMBHAVI ❤️",canvas.width/4,canvas.height/2);
+},3000);
+
 </script>
 
 </body>
 </html>
+
