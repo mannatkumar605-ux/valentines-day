@@ -98,4 +98,98 @@
 <button onclick="playMusic()">Play Our Song 🎵</button>
 
 <audio id="bgMusic" loop>
-    <source src="your-song.
+    <source src="your-song.mp3" type="audio/mp3">
+</audio>
+
+<script>
+    // 🎵 MUSIC FUNCTION
+    function playMusic() {
+        document.getElementById("bgMusic").play();
+    }
+
+    // ⏳ COUNTDOWN
+    const targetDate = new Date("Feb 14, 2026 00:00:00").getTime();
+    let fireworksStarted = false;
+
+    const countdownFunction = setInterval(function() {
+
+        const now = new Date().getTime();
+        const distance = targetDate - now;
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        if (distance > 0) {
+            document.getElementById("countdown").innerHTML =
+                days + "d " + hours + "h "
+                + minutes + "m " + seconds + "s ";
+        }
+
+        if (distance <= 0 && !fireworksStarted) {
+            clearInterval(countdownFunction);
+            document.getElementById("countdown").style.display = "none";
+            document.getElementById("finalMessage").style.display = "block";
+            startFireworks();
+            fireworksStarted = true;
+        }
+
+    }, 1000);
+
+    // 🎆 FIREWORKS
+    const canvas = document.getElementById("fireworks");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let particles = [];
+
+    function createFirework(x, y) {
+        for (let i = 0; i < 100; i++) {
+            particles.push({
+                x: x,
+                y: y,
+                speedX: (Math.random() - 0.5) * 8,
+                speedY: (Math.random() - 0.5) * 8,
+                life: 100
+            });
+        }
+    }
+
+    function update() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        particles.forEach((p, index) => {
+            p.x += p.speedX;
+            p.y += p.speedY;
+            p.life--;
+
+            ctx.fillStyle = "pink";
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+            ctx.fill();
+
+            if (p.life <= 0) {
+                particles.splice(index, 1);
+            }
+        });
+
+        requestAnimationFrame(update);
+    }
+
+    function startFireworks() {
+        setInterval(() => {
+            createFirework(
+                Math.random() * canvas.width,
+                Math.random() * canvas.height / 2
+            );
+        }, 400);
+    }
+
+    update();
+</script>
+
+</body>
+</html>
+
