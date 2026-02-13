@@ -3,207 +3,270 @@
 <head>
 <title>Happy Valentine's Day ❤️</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300&display=swap" rel="stylesheet">
+
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300&display=swap');
 
-body {
-    margin: 0;
-    padding: 0;
-    background: radial-gradient(circle at top, #2b0000, #000000);
-    overflow: hidden;
-    text-align: center;
-    font-family: 'Poppins', sans-serif;
-    color: white;
+body{
+margin:0;
+padding:0;
+background: radial-gradient(circle at center,#2b0000,#000000);
+font-family:'Poppins',sans-serif;
+color:white;
+text-align:center;
+overflow:hidden;
 }
 
-h1 {
-    font-family: 'Great Vibes', cursive;
-    font-size: 60px;
-    color: #ff4da6;
-    margin-top: 20px;
+/* INTRO SCREEN */
+#intro{
+position:fixed;
+width:100%;
+height:100%;
+background:black;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+z-index:10;
 }
 
-#subtitle {
-    font-size: 22px;
-    margin-bottom: 20px;
-    color: #ffd6f6;
+#intro h2{
+font-size:35px;
+margin-bottom:20px;
 }
 
-/* ❤️ PERFECT HEART PHOTO */
-.heart {
-    width: 300px;
-    height: 300px;
-    margin: 20px auto;
-    position: relative;
-    animation: beat 1.2s infinite;
+#enterBtn{
+padding:15px 30px;
+border:none;
+border-radius:30px;
+background:#ff4da6;
+color:white;
+font-size:20px;
+cursor:pointer;
 }
 
-.heart img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    clip-path: path("M150 270 C 30 150, 30 60, 150 120 C 270 60, 270 150, 150 270 Z");
-    box-shadow: 0 0 40px #ff4da6,
-                0 0 80px #ff1a75;
+/* MAIN CONTENT */
+h1{
+font-family:'Playfair Display',serif;
+font-size:55px;
+color:#ff4da6;
+margin-top:30px;
 }
 
-@keyframes beat {
-    0%,100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
+.subtitle{
+font-size:20px;
+margin-bottom:20px;
+color:#ffd6f6;
 }
 
-/* 💍 Ring */
-.ring {
-    font-size: 45px;
-    cursor: pointer;
-    margin-top: 15px;
+/* HEART IMAGE */
+.heart{
+width:300px;
+height:300px;
+margin:20px auto;
+animation:beat 1.5s infinite;
+cursor:pointer;
 }
 
-/* Sparkle */
-.sparkle {
-    position: absolute;
-    pointer-events: none;
-    font-size: 18px;
-    animation: sparkleAnim 1s linear forwards;
+.heart img{
+width:100%;
+height:100%;
+object-fit:cover;
+clip-path: polygon(
+50% 90%,
+90% 50%,
+75% 15%,
+50% 35%,
+25% 15%,
+10% 50%
+);
+box-shadow:0 0 40px #ff4da6;
 }
 
-@keyframes sparkleAnim {
-    to {
-        transform: translateY(-20px);
-        opacity: 0;
-    }
+@keyframes beat{
+0%,100%{transform:scale(1);}
+50%{transform:scale(1.1);}
 }
 
-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
+.ring{
+font-size:40px;
+cursor:pointer;
+margin-top:15px;
 }
+
+canvas{
+position:fixed;
+top:0;
+left:0;
+}
+
+.petal{
+position:absolute;
+font-size:20px;
+animation:fall 8s linear infinite;
+}
+
+@keyframes fall{
+0%{transform:translateY(-10vh);}
+100%{transform:translateY(110vh);}
+}
+
+.sparkle{
+position:absolute;
+pointer-events:none;
+animation:spark 1s linear;
+}
+
+@keyframes spark{
+to{
+transform:translateY(-20px);
+opacity:0;
+}
+}
+
 </style>
 </head>
 
 <body>
 
-<h1>HAPPY VALENTINE'S DAY BETTU ❤️</h1>
-<div id="subtitle">You are my forever & always ✨</div>
-
-<div class="heart" onclick="heartExplosion()">
-    <img src="her.jpeg" alt="My Love">
+<div id="intro">
+<h2>💖 A Special Surprise For You 💖</h2>
+<button id="enterBtn">Enter Our Love Story</button>
 </div>
 
-<div class="ring" onclick="showLove()">💍 Click Me</div>
+<h1>Happy Valentine's Day Bettu ❤️</h1>
+<div class="subtitle">You are my forever & always ✨</div>
 
-<audio id="bgMusic" loop>
-    <source src="your-song.mp3" type="audio/mpeg">
+<div class="heart" onclick="explode()">
+<img src="./her.jpeg">
+</div>
+
+<div class="ring" onclick="proposal()">💍 Click Me</div>
+
+<audio id="music" loop>
+<source src="./your-song.mp3" type="audio/mpeg">
 </audio>
 
 <canvas id="fireworks"></canvas>
 
 <script>
-/* 🎵 AUTO MUSIC WITH FADE IN */
-const music = document.getElementById("bgMusic");
-music.volume = 0;
-window.onload = function() {
-    music.play().catch(() => {});
-    let vol = 0;
-    const fade = setInterval(() => {
-        if (vol < 1) {
-            vol += 0.05;
-            music.volume = vol;
-        } else {
-            clearInterval(fade);
-        }
-    }, 200);
+
+/* ENTER BUTTON STARTS MUSIC */
+const intro=document.getElementById("intro");
+const enterBtn=document.getElementById("enterBtn");
+const music=document.getElementById("music");
+
+enterBtn.onclick=function(){
+intro.style.display="none";
+
+music.volume=0;
+music.play();
+
+let vol=0;
+let fade=setInterval(()=>{
+if(vol<1){
+vol+=0.05;
+music.volume=vol;
+}else clearInterval(fade);
+},200);
 };
 
-/* 💖 Heart Explosion */
-function heartExplosion() {
-    for (let i = 0; i < 30; i++) {
-        let heart = document.createElement("div");
-        heart.innerHTML = "❤️";
-        heart.style.position = "absolute";
-        heart.style.left = "50%";
-        heart.style.top = "50%";
-        heart.style.fontSize = "20px";
-        document.body.appendChild(heart);
+/* HEART EXPLOSION */
+function explode(){
+for(let i=0;i<30;i++){
+let h=document.createElement("div");
+h.innerHTML="❤️";
+h.style.position="absolute";
+h.style.left="50%";
+h.style.top="50%";
+document.body.appendChild(h);
 
-        let x = (Math.random() - 0.5) * 400;
-        let y = (Math.random() - 0.5) * 400;
+let x=(Math.random()-0.5)*500;
+let y=(Math.random()-0.5)*500;
 
-        heart.animate([
-            { transform: "translate(0,0)", opacity: 1 },
-            { transform: `translate(${x}px,${y}px)`, opacity: 0 }
-        ], {
-            duration: 1000
-        });
+h.animate([
+{transform:"translate(0,0)",opacity:1},
+{transform:`translate(${x}px,${y}px)`,opacity:0}
+],{duration:1000});
 
-        setTimeout(() => heart.remove(), 1000);
-    }
+setTimeout(()=>h.remove(),1000);
+}
 }
 
-/* 💍 Ring Click Popup */
-function showLove() {
-    alert("Will you be mine forever, Shambhavi? ❤️💍");
+/* PROPOSAL */
+function proposal(){
+alert("Will you be mine forever, Shambhavi? 💍❤️");
 }
 
-/* ✨ Sparkle Mouse Trail */
-document.addEventListener("mousemove", function(e) {
-    let sparkle = document.createElement("div");
-    sparkle.className = "sparkle";
-    sparkle.innerHTML = "✨";
-    sparkle.style.left = e.pageX + "px";
-    sparkle.style.top = e.pageY + "px";
-    document.body.appendChild(sparkle);
-    setTimeout(() => sparkle.remove(), 1000);
+/* ROSE PETALS */
+setInterval(()=>{
+let p=document.createElement("div");
+p.className="petal";
+p.innerHTML="🌹";
+p.style.left=Math.random()*100+"vw";
+document.body.appendChild(p);
+setTimeout(()=>p.remove(),8000);
+},600);
+
+/* SPARKLE TRAIL */
+document.addEventListener("mousemove",e=>{
+let s=document.createElement("div");
+s.className="sparkle";
+s.innerHTML="✨";
+s.style.left=e.pageX+"px";
+s.style.top=e.pageY+"px";
+document.body.appendChild(s);
+setTimeout(()=>s.remove(),1000);
 });
 
-/* 🎆 MULTI COLOR FIREWORKS */
-const canvas = document.getElementById("fireworks");
-const ctx = canvas.getContext("2d");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+/* FIREWORKS */
+const canvas=document.getElementById("fireworks");
+const ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
 
-let particles = [];
+let particles=[];
 
-function createFirework(x, y) {
-    const colors = ["#ff4da6","#ffcc00","#00ffff","#ffffff","#ff6600"];
-    for (let i = 0; i < 100; i++) {
-        particles.push({
-            x: x,
-            y: y,
-            speedX: (Math.random() - 0.5) * 8,
-            speedY: (Math.random() - 0.5) * 8,
-            life: 100,
-            color: colors[Math.floor(Math.random()*colors.length)]
-        });
-    }
+function fire(x,y){
+let colors=["#ff4da6","#ffcc00","#00ffff","#ffffff"];
+for(let i=0;i<80;i++){
+particles.push({
+x,y,
+sx:(Math.random()-0.5)*8,
+sy:(Math.random()-0.5)*8,
+life:100,
+color:colors[Math.floor(Math.random()*colors.length)]
+});
+}
 }
 
-function update() {
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    particles.forEach((p,index)=>{
-        p.x += p.speedX;
-        p.y += p.speedY;
-        p.life--;
+function update(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
 
-        ctx.fillStyle = p.color;
-        ctx.beginPath();
-        ctx.arc(p.x,p.y,3,0,Math.PI*2);
-        ctx.fill();
+particles.forEach((p,i)=>{
+p.x+=p.sx;
+p.y+=p.sy;
+p.life--;
 
-        if(p.life<=0) particles.splice(index,1);
-    });
-    requestAnimationFrame(update);
+ctx.fillStyle=p.color;
+ctx.beginPath();
+ctx.arc(p.x,p.y,3,0,Math.PI*2);
+ctx.fill();
+
+if(p.life<=0)particles.splice(i,1);
+});
+
+requestAnimationFrame(update);
 }
 
 setInterval(()=>{
-    createFirework(Math.random()*canvas.width,
-                   Math.random()*canvas.height/2);
+fire(Math.random()*canvas.width,
+Math.random()*canvas.height/2);
 },800);
 
 update();
+
 </script>
 
 </body>
 </html>
-
