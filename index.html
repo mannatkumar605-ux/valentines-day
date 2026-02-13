@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>My Forever Love ❤️</title>
+<title>Happy Valentine's Day ❤️</title>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300&display=swap');
@@ -9,75 +9,69 @@
 body {
     margin: 0;
     padding: 0;
-    background: radial-gradient(circle at top, #1a0026, #000000);
+    background: radial-gradient(circle at top, #2b0000, #000000);
     overflow: hidden;
+    text-align: center;
     font-family: 'Poppins', sans-serif;
     color: white;
-    text-align: center;
 }
 
 h1 {
     font-family: 'Great Vibes', cursive;
     font-size: 60px;
+    color: #ff4da6;
     margin-top: 20px;
-    color: #ff66cc;
 }
 
-#quote {
-    font-size: 20px;
-    width: 80%;
-    margin: auto;
+#subtitle {
+    font-size: 22px;
     margin-bottom: 20px;
     color: #ffd6f6;
 }
 
-/* 💖 BEATING HEART PHOTO */
-.heart-container {
-    width: 280px;
-    height: 280px;
-    margin: 30px auto;
+/* ❤️ PERFECT HEART PHOTO */
+.heart {
+    width: 300px;
+    height: 300px;
+    margin: 20px auto;
+    position: relative;
     animation: beat 1.2s infinite;
 }
 
-.heart-container img {
+.heart img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    clip-path: polygon(
-        50% 90%, 90% 50%, 75% 20%,
-        50% 35%, 25% 20%, 10% 50%
-    );
+    clip-path: path("M150 270 C 30 150, 30 60, 150 120 C 270 60, 270 150, 150 270 Z");
     box-shadow: 0 0 40px #ff4da6,
                 0 0 80px #ff1a75;
 }
 
 @keyframes beat {
-    0%, 100% { transform: scale(1); }
+    0%,100% { transform: scale(1); }
     50% { transform: scale(1.1); }
 }
 
-/* 💍 Ring Animation */
+/* 💍 Ring */
 .ring {
-    font-size: 40px;
-    animation: ringMove 3s infinite alternate;
+    font-size: 45px;
+    cursor: pointer;
+    margin-top: 15px;
 }
 
-@keyframes ringMove {
-    from { transform: translateY(0px); }
-    to { transform: translateY(10px); }
-}
-
-/* 🌹 Rose Petals */
-.petal {
+/* Sparkle */
+.sparkle {
     position: absolute;
-    color: pink;
-    font-size: 20px;
-    animation: fall 8s linear infinite;
+    pointer-events: none;
+    font-size: 18px;
+    animation: sparkleAnim 1s linear forwards;
 }
 
-@keyframes fall {
-    0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
-    100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+@keyframes sparkleAnim {
+    to {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
 }
 
 canvas {
@@ -90,41 +84,80 @@ canvas {
 
 <body>
 
-<canvas id="fireworks"></canvas>
+<h1>HAPPY VALENTINE'S DAY BETTU ❤️</h1>
+<div id="subtitle">You are my forever & always ✨</div>
 
-<h1>Shambhavi ❤️</h1>
-
-<p id="quote">
-"You are my today, my tomorrow, and my forever.
-With you, every moment feels like a beautiful dream.
-I promise to love you endlessly."
-</p>
-
-<div class="heart-container">
+<div class="heart" onclick="heartExplosion()">
     <img src="her.jpeg" alt="My Love">
 </div>
 
-<div class="ring">💍 Will You Be Mine Forever?</div>
+<div class="ring" onclick="showLove()">💍 Click Me</div>
 
-<p>Our Special Song 🎵</p>
-
-<audio controls>
+<audio id="bgMusic" loop>
     <source src="your-song.mp3" type="audio/mpeg">
 </audio>
 
-<script>
-/* 🌹 ROSE PETALS */
-setInterval(() => {
-    const petal = document.createElement("div");
-    petal.className = "petal";
-    petal.innerHTML = "🌹";
-    petal.style.left = Math.random() * 100 + "vw";
-    petal.style.animationDuration = (Math.random() * 5 + 5) + "s";
-    document.body.appendChild(petal);
-    setTimeout(() => petal.remove(), 8000);
-}, 500);
+<canvas id="fireworks"></canvas>
 
-/* 🎆 FIREWORKS SPELL NAME */
+<script>
+/* 🎵 AUTO MUSIC WITH FADE IN */
+const music = document.getElementById("bgMusic");
+music.volume = 0;
+window.onload = function() {
+    music.play().catch(() => {});
+    let vol = 0;
+    const fade = setInterval(() => {
+        if (vol < 1) {
+            vol += 0.05;
+            music.volume = vol;
+        } else {
+            clearInterval(fade);
+        }
+    }, 200);
+};
+
+/* 💖 Heart Explosion */
+function heartExplosion() {
+    for (let i = 0; i < 30; i++) {
+        let heart = document.createElement("div");
+        heart.innerHTML = "❤️";
+        heart.style.position = "absolute";
+        heart.style.left = "50%";
+        heart.style.top = "50%";
+        heart.style.fontSize = "20px";
+        document.body.appendChild(heart);
+
+        let x = (Math.random() - 0.5) * 400;
+        let y = (Math.random() - 0.5) * 400;
+
+        heart.animate([
+            { transform: "translate(0,0)", opacity: 1 },
+            { transform: `translate(${x}px,${y}px)`, opacity: 0 }
+        ], {
+            duration: 1000
+        });
+
+        setTimeout(() => heart.remove(), 1000);
+    }
+}
+
+/* 💍 Ring Click Popup */
+function showLove() {
+    alert("Will you be mine forever, Shambhavi? ❤️💍");
+}
+
+/* ✨ Sparkle Mouse Trail */
+document.addEventListener("mousemove", function(e) {
+    let sparkle = document.createElement("div");
+    sparkle.className = "sparkle";
+    sparkle.innerHTML = "✨";
+    sparkle.style.left = e.pageX + "px";
+    sparkle.style.top = e.pageY + "px";
+    document.body.appendChild(sparkle);
+    setTimeout(() => sparkle.remove(), 1000);
+});
+
+/* 🎆 MULTI COLOR FIREWORKS */
 const canvas = document.getElementById("fireworks");
 const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
@@ -133,52 +166,44 @@ canvas.height = window.innerHeight;
 let particles = [];
 
 function createFirework(x, y) {
-    for (let i = 0; i < 120; i++) {
+    const colors = ["#ff4da6","#ffcc00","#00ffff","#ffffff","#ff6600"];
+    for (let i = 0; i < 100; i++) {
         particles.push({
             x: x,
             y: y,
             speedX: (Math.random() - 0.5) * 8,
             speedY: (Math.random() - 0.5) * 8,
-            life: 100
+            life: 100,
+            color: colors[Math.floor(Math.random()*colors.length)]
         });
     }
 }
 
 function update() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    particles.forEach((p, index) => {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach((p,index)=>{
         p.x += p.speedX;
         p.y += p.speedY;
         p.life--;
 
-        ctx.fillStyle = "#ff66cc";
+        ctx.fillStyle = p.color;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+        ctx.arc(p.x,p.y,3,0,Math.PI*2);
         ctx.fill();
 
-        if (p.life <= 0) particles.splice(index, 1);
+        if(p.life<=0) particles.splice(index,1);
     });
-
     requestAnimationFrame(update);
 }
 
-function spellName() {
-    ctx.font = "80px Great Vibes";
-    ctx.fillStyle = "#ff4da6";
-    ctx.fillText("SHAMBHAVI ❤️", canvas.width/6, canvas.height/2);
-}
-
-setInterval(() => {
-    createFirework(Math.random() * canvas.width,
-                   Math.random() * canvas.height/2);
-}, 800);
+setInterval(()=>{
+    createFirework(Math.random()*canvas.width,
+                   Math.random()*canvas.height/2);
+},800);
 
 update();
-setTimeout(spellName, 3000);
 </script>
 
 </body>
 </html>
 
-   
