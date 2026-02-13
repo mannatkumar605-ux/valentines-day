@@ -14,61 +14,49 @@
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            font-family: 'Georgia', serif;
+            font-family: Georgia, serif;
             color: white;
             text-align: center;
         }
 
         h1 {
-            font-size: 45px;
+            font-size: 40px;
             margin-bottom: 10px;
         }
 
         #countdown {
-            font-size: 28px;
+            font-size: 24px;
             color: #ff4da6;
             text-shadow: 0 0 15px #ff1a75;
             margin-bottom: 20px;
         }
 
         #finalMessage {
-            font-size: 35px;
+            font-size: 30px;
             color: gold;
-            text-shadow: 0 0 20px gold;
             display: none;
-            animation: glowText 2s infinite alternate;
-        }
-
-        @keyframes glowText {
-            from { text-shadow: 0 0 10px gold; }
-            to { text-shadow: 0 0 40px #ff4da6; }
+            text-shadow: 0 0 20px gold;
         }
 
         img {
-            width: 220px;
-            height: 220px;
+            width: 200px;
+            height: 200px;
             border-radius: 50%;
             border: 5px solid gold;
             box-shadow: 0 0 20px gold,
-                        0 0 40px #ff4da6,
-                        0 0 60px #ff1a75;
-            animation: glow 2s infinite alternate;
-        }
-
-        @keyframes glow {
-            from { box-shadow: 0 0 20px gold; }
-            to { box-shadow: 0 0 60px #ff4da6; }
+                        0 0 40px #ff4da6;
+            margin-bottom: 15px;
         }
 
         button {
-            margin-top: 20px;
-            padding: 12px 30px;
-            font-size: 16px;
-            border-radius: 30px;
+            padding: 12px 25px;
+            border-radius: 25px;
             border: none;
             background: linear-gradient(45deg,#ff0066,#ff4da6);
             color: white;
             cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
         }
 
         canvas {
@@ -91,21 +79,26 @@
     Happy Valentine's Day My Forever Love ❤️✨
 </div>
 
-<img src="her.jpeg" alt="My Love">
+<img src="./her.jpeg" alt="My Love">
 
-<br>
+<button id="musicBtn">Play Our Song 🎵</button>
 
-<button onclick="playMusic()">Play Our Song 🎵</button>
-
-<audio id="bgMusic" loop>
-    <source src="your-song.mp3" type="audio/mp3">
+<audio id="bgMusic">
+    <source src="./your-song.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-    // 🎵 MUSIC FUNCTION
-    function playMusic() {
-        document.getElementById("bgMusic").play();
-    }
+    // 🎵 MUSIC FIXED FOR GITHUB
+    const music = document.getElementById("bgMusic");
+    const btn = document.getElementById("musicBtn");
+
+    btn.addEventListener("click", function() {
+        music.play().then(() => {
+            btn.innerText = "Music Playing ❤️";
+        }).catch(() => {
+            alert("Tap again to play music 🎵");
+        });
+    });
 
     // ⏳ COUNTDOWN
     const targetDate = new Date("Feb 14, 2026 00:00:00").getTime();
@@ -123,8 +116,8 @@
 
         if (distance > 0) {
             document.getElementById("countdown").innerHTML =
-                days + "d " + hours + "h "
-                + minutes + "m " + seconds + "s ";
+                days + "d " + hours + "h " +
+                minutes + "m " + seconds + "s ";
         }
 
         if (distance <= 0 && !fireworksStarted) {
@@ -146,7 +139,7 @@
     let particles = [];
 
     function createFirework(x, y) {
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < 80; i++) {
             particles.push({
                 x: x,
                 y: y,
@@ -184,7 +177,7 @@
                 Math.random() * canvas.width,
                 Math.random() * canvas.height / 2
             );
-        }, 400);
+        }, 500);
     }
 
     update();
@@ -192,4 +185,3 @@
 
 </body>
 </html>
-
