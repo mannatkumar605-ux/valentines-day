@@ -7,7 +7,7 @@
         body {
             margin: 0;
             padding: 0;
-            background: radial-gradient(circle at top, #14001f, #000);
+            background: linear-gradient(135deg, #ff758c, #ff7eb3, #ff4d6d);
             height: 100vh;
             overflow: hidden;
             display: flex;
@@ -28,40 +28,78 @@
             width: 80%;
             font-size: 20px;
             margin-bottom: 20px;
-            color: #ffd1dc;
         }
 
-        img {
-            width: 320px;   /* BIGGER PHOTO */
-            height: 320px;
-            border-radius: 20px;
-            border: 5px solid gold;
-            box-shadow: 0 0 25px gold,
-                        0 0 60px #ff4da6;
-            margin-bottom: 20px;
+        /* 💖 HEART SHAPED PHOTO */
+        .heart-img {
+            width: 300px;
+            height: 270px;
+            background: url("her.jpeg") center/cover no-repeat;
+            position: relative;
+            transform: rotate(-45deg);
+            margin: 30px 0;
+            box-shadow: 0 0 40px rgba(255,255,255,0.8);
+        }
+
+        .heart-img:before,
+        .heart-img:after {
+            content: "";
+            width: 300px;
+            height: 270px;
+            background: url("her.jpeg") center/cover no-repeat;
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .heart-img:before {
+            top: -150px;
+            left: 0;
+        }
+
+        .heart-img:after {
+            left: 150px;
+            top: 0;
         }
 
         #countdown {
             font-size: 22px;
-            color: #ff4da6;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         audio {
             margin-top: 10px;
-            z-index: 2;
+        }
+
+        /* ✨ Floating Hearts */
+        .floating-heart {
+            position: absolute;
+            font-size: 20px;
+            animation: floatUp 6s linear infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+            50% { opacity: 1; }
+            100% {
+                transform: translateY(-10vh);
+                opacity: 0;
+            }
         }
 
         canvas {
             position: fixed;
             top: 0;
             left: 0;
-            z-index: 0;
         }
 
         .content {
             z-index: 1;
         }
+
     </style>
 </head>
 
@@ -74,15 +112,15 @@
 <h1>Shambhavi ❤️</h1>
 
 <p id="quote">
-    "In a world full of temporary things,  
-    you are my forever.  
-    Every heartbeat of mine whispers your name.  
-    Loving you is the most beautiful chapter of my life."
+    "You are not just my love,  
+    you are my heartbeat, my peace, my forever.  
+    Every moment with you feels like magic.  
+    I choose you today, tomorrow, and always."
 </p>
 
 <div id="countdown"></div>
 
-<img src="her.jpeg" alt="My Love">
+<div class="heart-img"></div>
 
 <p>Our Special Song 🎵</p>
 
@@ -93,12 +131,25 @@
 </div>
 
 <script>
+    // 💖 Floating Hearts
+    setInterval(() => {
+        const heart = document.createElement("div");
+        heart.className = "floating-heart";
+        heart.innerHTML = "❤️";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.fontSize = Math.random() * 20 + 15 + "px";
+        document.body.appendChild(heart);
+
+        setTimeout(() => {
+            heart.remove();
+        }, 6000);
+    }, 500);
+
     // ⏳ Countdown
     const targetDate = new Date("Feb 14, 2026 00:00:00").getTime();
     let fireworksStarted = false;
 
     setInterval(function() {
-
         const now = new Date().getTime();
         const distance = targetDate - now;
 
@@ -114,11 +165,9 @@
         } else if (!fireworksStarted) {
             document.getElementById("countdown").innerHTML =
                 "Happy Valentine's Day My Love ❤️✨";
-
             startFireworks();
             fireworksStarted = true;
         }
-
     }, 1000);
 
     // 🎆 Fireworks
@@ -149,7 +198,7 @@
             p.y += p.speedY;
             p.life--;
 
-            ctx.fillStyle = "pink";
+            ctx.fillStyle = "white";
             ctx.beginPath();
             ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
             ctx.fill();
@@ -168,7 +217,7 @@
                 Math.random() * canvas.width,
                 Math.random() * canvas.height / 2
             );
-        }, 600);
+        }, 700);
     }
 
     update();
@@ -176,4 +225,3 @@
 
 </body>
 </html>
-
