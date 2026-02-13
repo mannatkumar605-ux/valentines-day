@@ -9,7 +9,6 @@
             padding: 0;
             background: radial-gradient(circle at top, #14001f, #000);
             height: 100vh;
-            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -19,18 +18,8 @@
             text-align: center;
         }
 
-        h1 { font-size: 40px; }
-
-        #countdown {
-            font-size: 24px;
-            color: #ff4da6;
-            margin-bottom: 20px;
-        }
-
-        #finalMessage {
-            font-size: 28px;
-            color: gold;
-            display: none;
+        h1 {
+            font-size: 40px;
         }
 
         img {
@@ -38,61 +27,39 @@
             height: 200px;
             border-radius: 50%;
             border: 4px solid gold;
+            margin: 20px 0;
+        }
+
+        #countdown {
+            font-size: 22px;
+            color: #ff4da6;
             margin-bottom: 15px;
         }
 
-        button {
-            padding: 12px 25px;
-            border-radius: 25px;
-            border: none;
-            background: #ff4da6;
-            color: white;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
+        audio {
+            margin-top: 10px;
         }
     </style>
 </head>
 
 <body>
 
-<canvas id="fireworks"></canvas>
-
 <h1>Shambhavi ❤️</h1>
 
 <div id="countdown"></div>
 
-<div id="finalMessage">
-    Happy Valentine's Day My Forever Love ❤️✨
-</div>
-
 <img src="her.jpeg" alt="My Love">
 
-<button id="musicBtn">Tap To Play Our Song 🎵</button>
+<p>Our Special Song 🎵</p>
 
-<audio id="bgMusic" preload="auto">
+<audio controls>
     <source src="your-song.mp3" type="audio/mpeg">
+    Your browser does not support audio.
 </audio>
 
 <script>
-    // 🎵 STRONG MUSIC FIX
-    const music = document.getElementById("bgMusic");
-    const btn = document.getElementById("musicBtn");
-
-    btn.onclick = function() {
-        music.currentTime = 0;
-        music.play();
-        btn.innerText = "Music Playing ❤️";
-    };
-
-    // ⏳ COUNTDOWN
+    // Countdown
     const targetDate = new Date("Feb 14, 2026 00:00:00").getTime();
-    let fireworksStarted = false;
 
     setInterval(function() {
 
@@ -108,68 +75,12 @@
             document.getElementById("countdown").innerHTML =
                 days + "d " + hours + "h " +
                 minutes + "m " + seconds + "s ";
-        }
-
-        if (distance <= 0 && !fireworksStarted) {
-            document.getElementById("countdown").style.display = "none";
-            document.getElementById("finalMessage").style.display = "block";
-            startFireworks();
-            fireworksStarted = true;
+        } else {
+            document.getElementById("countdown").innerHTML =
+                "Happy Valentine's Day ❤️✨";
         }
 
     }, 1000);
-
-    // 🎆 FIREWORKS
-    const canvas = document.getElementById("fireworks");
-    const ctx = canvas.getContext("2d");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    let particles = [];
-
-    function createFirework(x, y) {
-        for (let i = 0; i < 80; i++) {
-            particles.push({
-                x: x,
-                y: y,
-                speedX: (Math.random() - 0.5) * 8,
-                speedY: (Math.random() - 0.5) * 8,
-                life: 100
-            });
-        }
-    }
-
-    function update() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        particles.forEach((p, index) => {
-            p.x += p.speedX;
-            p.y += p.speedY;
-            p.life--;
-
-            ctx.fillStyle = "pink";
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
-            ctx.fill();
-
-            if (p.life <= 0) {
-                particles.splice(index, 1);
-            }
-        });
-
-        requestAnimationFrame(update);
-    }
-
-    function startFireworks() {
-        setInterval(() => {
-            createFirework(
-                Math.random() * canvas.width,
-                Math.random() * canvas.height / 2
-            );
-        }, 500);
-    }
-
-    update();
 </script>
 
 </body>
